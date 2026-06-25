@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#faf8f3">
+<title>AI Builders Digest — 2026年6月25日</title>
+<meta name="description" content="追踪顶尖 AI builder 的每日文摘。今日主线:Anthropic 发布 Claude Tag。">
+
+<!-- === FONTS (Editorial: Fraunces display serif + Newsreader + Work Sans body) === -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500&family=Work+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* === DESIGN TOKENS — Bright editorial === */
+:root {
+    --paper: #faf8f3;          /* warm cream paper */
+    --paper-deep: #f3efe6;     /* slightly deeper panel */
+    --ink: #1c1a17;            /* near-black ink */
+    --ink-soft: #44403a;       /* body text */
+    --ink-muted: #837c72;      /* secondary */
+    --ink-faint: #aaa498;      /* tertiary / meta */
+    --accent: #c2410c;         /* burnt orange — editorial red-orange */
+    --accent-soft: #e8643a;
+    --accent-wash: #fceee6;    /* tint behind accents */
+    --rule: #e3ddd0;           /* hairline rules */
+    --rule-strong: #d4ccbb;
+    --link: #b23a0a;
+    --link-hover: #8c2d05;
+    --maxw: 760px;
+
+    --fs-body: 1.05rem;
+}
+
+/* === RESET === */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+    background: var(--paper);
+    color: var(--ink-soft);
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 400;
+    font-size: var(--fs-body);
+    line-height: 1.72;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+}
+
+/* subtle paper grain via layered gradients */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 12% 8%, rgba(194,65,12,0.04) 0%, transparent 42%),
+        radial-gradient(circle at 88% 92%, rgba(140,45,5,0.035) 0%, transparent 45%);
+}
+
+/* === LAYOUT SHELL === */
+.shell {
+    position: relative;
+    z-index: 1;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 28px 100px;
+}
+
+/* === HERO === */
+header.hero {
+    padding: 84px 0 44px;
+    border-bottom: 3px double var(--rule-strong);
+}
+.hero .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.hero .kicker::before {
+    content: "";
+    width: 30px; height: 2px;
+    background: var(--accent);
+    display: inline-block;
+}
+.hero h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(2.6rem, 9vw, 4.6rem);
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 28px;
+}
+.hero h1 .em { font-style: italic; color: var(--accent); font-weight: 500; }
+.hero .lede {
+    font-family: 'Newsreader', 'Fraunces', serif;
+    font-size: clamp(1.1rem, 3.6vw, 1.3rem);
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 620px;
+}
+.hero .lede strong { color: var(--ink); font-weight: 600; }
+.hero .meta {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+.chip {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-muted);
+    background: var(--paper-deep);
+    border: 1px solid var(--rule);
+    border-radius: 100px;
+    padding: 6px 14px;
+    white-space: nowrap;
+}
+.chip .dot { color: var(--accent); }
+
+/* === SECTION HEADERS === */
+.section { padding-top: 64px; }
+.section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 6px;
+}
+.section-head .num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+}
+.section-head h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(1.9rem, 6vw, 2.5rem);
+    color: var(--ink);
+    letter-spacing: -0.01em;
+}
+.section-sub {
+    color: var(--ink-muted);
+    font-size: 0.92rem;
+    margin-bottom: 12px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--rule);
+}
+
+/* === BUILDER CARD === */
+.builder {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule);
+}
+.builder:last-child { border-bottom: none; }
+.builder-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 3px 12px;
+    margin-bottom: 13px;
+}
+.builder-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 4.5vw, 1.6rem);
+    color: var(--ink);
+    line-height: 1.12;
+}
+.builder-role {
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-weight: 500;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.01em;
+}
+.builder-body {
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+}
+.builder-body strong { color: var(--ink); font-weight: 600; }
+.builder-body em {
+    color: var(--accent);
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.04em;
+}
+
+/* === LINK ROW === */
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+a.src {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--link);
+    text-decoration: none;
+    width: fit-content;
+    max-width: 100%;
+    padding: 3px 0;
+    transition: color 0.2s ease;
+}
+a.src .arrow {
+    color: var(--accent);
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+    font-weight: 500;
+}
+a.src .url-text {
+    border-bottom: 1px solid var(--rule-strong);
+    transition: border-color 0.2s ease;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+a.src:hover { color: var(--link-hover); }
+a.src:hover .arrow { transform: translateX(4px); }
+a.src:hover .url-text { border-bottom-color: var(--link-hover); }
+/* Bigger tap targets on touch devices */
+@media (hover: none) {
+    a.src { padding: 7px 0; }
+}
+
+/* === PODCAST FEATURE === */
+.podcast {
+    background: var(--paper-deep);
+    border: 1px solid var(--rule-strong);
+    border-radius: 14px;
+    padding: 38px 34px;
+    margin-top: 6px;
+}
+.podcast .pod-show {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+}
+.podcast h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(1.5rem, 5vw, 1.9rem);
+    line-height: 1.16;
+    margin-bottom: 8px;
+    color: var(--ink);
+}
+.podcast .guests {
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.0rem, 3.5vw, 1.15rem);
+    color: var(--accent);
+    margin-bottom: 22px;
+}
+.pod-points { list-style: none; display: flex; flex-direction: column; gap: 18px; margin: 22px 0; }
+.pod-points li { position: relative; padding-left: 24px; color: var(--ink-soft); }
+.pod-points li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 11px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+}
+.pod-points li strong { color: var(--ink); font-weight: 600; }
+.pod-points .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+/* === EMPTY NOTE === */
+.empty-note {
+    margin-top: 36px;
+    color: var(--ink-muted);
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 26px;
+    border: 1px dashed var(--rule-strong);
+    border-radius: 12px;
+}
+
+/* === FOOTER === */
+footer {
+    margin-top: 80px;
+    padding-top: 34px;
+    border-top: 3px double var(--rule-strong);
+    text-align: center;
+}
+footer .philosophy {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.2rem, 4.5vw, 1.5rem);
+    color: var(--ink);
+    margin-bottom: 22px;
+    line-height: 1.4;
+}
+footer .attribution {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.02em;
+    line-height: 1.8;
+}
+footer .attribution a { color: var(--link); text-decoration: none; border-bottom: 1px solid var(--rule-strong); }
+footer .attribution a:hover { color: var(--link-hover); }
+
+/* === ENTRANCE ANIMATION === */
+.reveal { opacity: 0; transform: translateY(18px); animation: rise 0.7s cubic-bezier(0.22,1,0.36,1) forwards; }
+@keyframes rise { to { opacity: 1; transform: translateY(0); } }
+.hero .kicker { animation-delay: 0.05s; }
+.hero h1     { animation-delay: 0.14s; }
+.hero .lede  { animation-delay: 0.28s; }
+.hero .meta  { animation-delay: 0.40s; }
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal { animation: none; opacity: 1; transform: none; }
+    html { scroll-behavior: auto; }
+}
+
+/* === MOBILE ADAPTATION === */
+@media (max-width: 600px) {
+    :root { --fs-body: 1.02rem; }
+    .shell { padding: 0 20px 72px; }
+    header.hero { padding: 56px 0 34px; }
+    .hero .meta { gap: 7px; }
+    .chip { font-size: 0.66rem; padding: 5px 11px; }
+    .section { padding-top: 52px; }
+    .podcast { padding: 28px 22px; border-radius: 12px; }
+    .builder { padding: 24px 0; }
+    a.src { font-size: 0.76rem; }
+}
+@media (max-width: 380px) {
+    .shell { padding: 0 16px 64px; }
+}
+
+/* Respect notches / safe areas on phones */
+@supports (padding: max(0px)) {
+    .shell {
+        padding-left: max(28px, env(safe-area-inset-left));
+        padding-right: max(28px, env(safe-area-inset-right));
+    }
+    @media (max-width: 600px) {
+        .shell {
+            padding-left: max(20px, env(safe-area-inset-left));
+            padding-right: max(20px, env(safe-area-inset-right));
+        }
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+    <!-- === HERO === -->
+    <header class="hero">
+        <div class="kicker reveal">AI BUILDERS DIGEST · 2026年6月25日</div>
+        <h1 class="reveal">Follow builders,<br>not <span class="em">influencers</span>.</h1>
+        <p class="lede reveal">
+            今天的绝对主线:Anthropic 发布 <strong>Claude Tag</strong>(Slack 上的 beta,面向 Enterprise / Team)。
+            一大批 builder 围绕「AI agent 作为团队成员」这一范式展开讨论。暗线是 Google Workspace CLI 引发的争论。
+        </p>
+        <div class="meta reveal">
+            <span class="chip"><span class="dot">●</span> 15 位 Builder</span>
+            <span class="chip"><span class="dot">●</span> 1 档播客</span>
+            <span class="chip"><span class="dot">●</span> 来源已校验 · 链接可点</span>
+        </div>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- === SECTION 1: X / TWITTER === -->
+    <!-- ============================================================ -->
+    <section class="section">
+        <div class="section-head">
+            <span class="num">01</span>
+            <h2>X / Twitter</h2>
+        </div>
+        <p class="section-sub">顶尖 AI builder 的原创观点、产品发布与行业判断。</p>
+
+        <!-- Karpathy -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Andrej Karpathy</span>
+                <span class="builder-role">深度学习研究者 · 前 Tesla AI 总监</span>
+            </div>
+            <p class="builder-body">
+                他认为 Claude Tag 代表了 LLM 交互方式的<strong>第三次重大范式转变</strong>:第一代是「你去访问的网站」,
+                第二代是「下载到电脑的 app」,第三代则是一个自带组织级工具和上下文、持久化、异步运行的实体,真正像团队成员一样和人协作。
+                他说一旦底层工程(跨工具、集成、记忆、安全)打通,Claude 就能无缝「入职」。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/karpathy/status/2069547676849557725" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/karpathy/status/2069547676849557725</span></a>
+            </div>
+        </article>
+
+        <!-- Boris Cherny -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Boris Cherny</span>
+                <span class="builder-role">Anthropic · Claude Code</span>
+            </div>
+            <p class="builder-body">
+                拆解了 Claude Tag 的技术机制:在 Slack 频道里 @Claude 并派活,它会启动一个带独立 sandbox 的实例,
+                在隔离环境里 clone repo、写代码、跑测试、编译,任务完成后 sandbox 销毁。每个 thread 一个实例,按频道隔离记忆和权限。
+                他还让 Claude 主动监控频道、回答问题、起草 PR,并用 ✅❌ emoji 标记 thread 是否解决。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/bcherny/status/2069474689819480394" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/bcherny/status/2069474689819480394</span></a>
+                <a class="src" href="https://x.com/bcherny/status/2069474688619958517" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/bcherny/status/2069474688619958517</span></a>
+            </div>
+        </article>
+
+        <!-- Cat Wu -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Cat Wu</span>
+                <span class="builder-role">Anthropic · Claude Code + cowork</span>
+            </div>
+            <p class="builder-body">
+                她说 Claude Tag 是 Anthropic 内部发布产品方式的范式转变:<strong>内部版本已经能自动 merge 65% 的产品 PR</strong>,
+                而且这是他们第一个原生多人协作 + 主动式的产品。还分享了 6 种已在内部和设计伙伴中验证有效的常见工作流,以及配置 agent 权限的入门指南。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/_catwu/status/2069473118742331608" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/_catwu/status/2069473118742331608</span></a>
+                <a class="src" href="https://x.com/_catwu/status/2069486403696869555" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/_catwu/status/2069486403696869555</span></a>
+            </div>
+        </article>
+
+        <!-- Thariq -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Thariq</span>
+                <span class="builder-role">Anthropic · Claude Code</span>
+            </div>
+            <p class="builder-body">
+                分享了几个 Claude Tag 的实用玩法:建一个「scheduling」频道让人 @Claude 找日历空档;
+                让 Claude 用 ⏲️✅❓🛑 emoji 标状态以便一眼看清进度;在个人频道里让 Claude 维护一条 pinned 消息、实时更新所有任务状态(thread 多了不会乱)。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/trq212/status/2069474339679052144" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/trq212/status/2069474339679052144</span></a>
+                <a class="src" href="https://x.com/trq212/status/2069474342220820657" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/trq212/status/2069474342220820657</span></a>
+            </div>
+        </article>
+
+        <!-- Claude official -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Claude</span>
+                <span class="builder-role">Anthropic 官方账号</span>
+            </div>
+            <p class="builder-body">
+                官宣 Claude Tag 今日在 Slack 上线 beta。开启 ambient 模式后,Claude 会主动跟进沉寂的 thread、从各频道和工具里标出相关信息;
+                频道里只有一个 Claude 与所有人交互,队友可以无缝接力,它会持续积累上下文,不用从头解释。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/claudeai/status/2069468701548531895" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/claudeai/status/2069468701548531895</span></a>
+            </div>
+        </article>
+
+        <!-- Aaron Levie -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Aaron Levie</span>
+                <span class="builder-role">Box CEO</span>
+            </div>
+            <p class="builder-body">
+                两条都很有料。一是关于 AI 定价的<strong>杠铃效应</strong>分析:市场会分化成高成本 frontier 模型和便宜好用的开/闭源模型两端,
+                而价值会沉淀到 applied AI 层——它能按工作负载实时路由到最优模型、对冲高 token 成本或低性能,越贴近具体业务流程就越能调优。
+                二是 Box 接入 Claude Tag,让企业内容通过 Slack 变成可移植的知识库,作为 headless 软件 + agent 的又一例证。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/levie/status/2069639600310767616" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/levie/status/2069639600310767616</span></a>
+                <a class="src" href="https://x.com/levie/status/2069596515560267891" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/levie/status/2069596515560267891</span></a>
+            </div>
+        </article>
+
+        <!-- Madhu Guru -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Madhu Guru</span>
+                <span class="builder-role">前 Google Gemini / Veo / Nano Banana 产品负责人</span>
+            </div>
+            <p class="builder-body">
+                他从企业、agent 创业公司、数据供应商、实验室多个视角观察这个生态,核心张力在于:所有玩家的商业模式、护城河、价值交换、执行打法都还在实时摸索。
+                眼下关于 token 定价的争论,本质是在争<em>「价值最终会沉淀在哪一层」</em>——模型、应用层、分发还是别处。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/realmadhuguru/status/2069455097193697393" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/realmadhuguru/status/2069455097193697393</span></a>
+            </div>
+        </article>
+
+        <!-- Peter Yang -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Peter Yang</span>
+                <span class="builder-role">AI 教程 / 访谈作者</span>
+            </div>
+            <p class="builder-body">
+                抛出一个值得琢磨的问题:<em>如果访问你产品的只是一个找 API 或 CLI 的 agent,那「设计」还意味着什么?</em>
+                他还观察到人和 agent 的交互正在趋近于「管理一个能力很强的员工」——下一步是不是要给 Claude 做 1 on 1 和绩效复盘了。顺带力挺了 Google Workspace CLI。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/petergyang/status/2069603490524254473" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/petergyang/status/2069603490524254473</span></a>
+                <a class="src" href="https://x.com/petergyang/status/2069530765352907180" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/petergyang/status/2069530765352907180</span></a>
+            </div>
+        </article>
+
+        <!-- Garry Tan -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Garry Tan</span>
+                <span class="builder-role">Y Combinator CEO</span>
+            </div>
+            <p class="builder-body">
+                两条 builder 相关:一是介绍 Linzumi——「Codex 但真正支持多人协作」,对团队很好用(其创始人 Sean Grove 曾在 OpenAI 团队大幅降低了 ChatGPT 的谄媚倾向);
+                二是喊话 Dropbox 应该支持 3TB 以上套餐,认为 AI 产生的可用数据量即将指数增长,Dropbox 不更新就会被冲垮。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/garrytan/status/2069474420113146355" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/garrytan/status/2069474420113146355</span></a>
+                <a class="src" href="https://x.com/garrytan/status/2069434452628185241" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/garrytan/status/2069434452628185241</span></a>
+            </div>
+        </article>
+
+        <!-- Nikunj -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Nikunj Kothari</span>
+                <span class="builder-role">FPV Ventures 合伙人</span>
+            </div>
+            <p class="builder-body">
+                周末用 Shopify 新发布的 UCP CLI 做了个产品 <strong>Plug That Shop</strong>:输入网址就能生成 4 个高度相关、可一键嵌入的商店,
+                买家用 Shop 一键结账。技术栈是 Conductor、Anthropic Opus 4.8、Shopify UCP CLI 和 Railway。免费、无返佣。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/nikunj/status/2069534712763490668" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/nikunj/status/2069534712763490668</span></a>
+            </div>
+        </article>
+
+        <!-- swyx -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">swyx</span>
+                <span class="builder-role">AI Engineer · Latent Space</span>
+            </div>
+            <p class="builder-body">
+                点评 Zai 的崛起:1 月以 HK$120 在港股 IPO,当初没人知道有谁在用 GLM,如今已凭借公认顶级的开源模型超过 DeepSeek,
+                某些维度上甚至被认为是最强模型,还重返 SF 参加 AI Engineer 大会。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/swyx/status/2069598378191941835" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/swyx/status/2069598378191941835</span></a>
+            </div>
+        </article>
+
+        <!-- Aditya Agarwal -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Aditya Agarwal</span>
+                <span class="builder-role">South Park Commons 合伙人</span>
+            </div>
+            <p class="builder-body">
+                South Park Commons 投了 Longshot Space——一家造「用大炮把载荷打进轨道」的公司。理由是太空发射需求远超运力。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/adityaag/status/2069464862556619263" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/adityaag/status/2069464862556619263</span></a>
+            </div>
+        </article>
+
+        <!-- Guillermo Rauch -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Guillermo Rauch</span>
+                <span class="builder-role">Vercel CEO</span>
+            </div>
+            <p class="builder-body">
+                放出 Vercel + Cursor 的合作消息,并组建了一个 X 群收集 agent 构建者的高质量反馈。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/rauchg/status/2069513849578082474" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/rauchg/status/2069513849578082474</span></a>
+            </div>
+        </article>
+
+        <!-- Alex Albert -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Alex Albert</span>
+                <span class="builder-role">Anthropic 研究</span>
+            </div>
+            <p class="builder-body">
+                简短一条,呼应 Claude Tag 主题:这彻底改变了他和 Claude 协作的方式,<em>「感觉不像在用工具,更像在管理一个团队」</em>。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/alexalbert__/status/2069470389391241314" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/alexalbert__/status/2069470389391241314</span></a>
+            </div>
+        </article>
+
+        <!-- Peter Steinberger -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Peter Steinberger</span>
+                <span class="builder-role">OpenClaw · OpenAI</span>
+            </div>
+            <p class="builder-body">
+                吐槽 Google 把做了 Workspace CLI 的人开除了,就因为他做了 Workspace CLI——<em>「幸好 Google 开除不了我」</em>。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/steipete/status/2069594195522941059" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/steipete/status/2069594195522941059</span></a>
+            </div>
+        </article>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- === SECTION 2: PODCASTS === -->
+    <!-- ============================================================ -->
+    <section class="section">
+        <div class="section-head">
+            <span class="num">02</span>
+            <h2>Podcasts</h2>
+        </div>
+        <p class="section-sub">本期精选一档深度对话。</p>
+
+        <div class="podcast">
+            <div class="pod-show">No Priors</div>
+            <h3>Biohub:开源的生物学未来</h3>
+            <div class="guests">嘉宾:Mark Zuckerberg、Priscilla Chan、首席科学家 Alex Rives</div>
+
+            <p class="builder-body">
+                这期聊的是 Chan Zuckerberg Biohub 的「virtual biology initiative」(已承诺投入 5 亿美元)。
+                核心思路:<strong>把 frontier AI 和 frontier biology 真正耦合成一个团队</strong>。
+            </p>
+
+            <ul class="pod-points">
+                <li>
+                    <span class="tag">为什么做成开源非营利</span>
+                    扎克伯格说目标不是自己治愈疾病,而是给整个科研界造工具、加速进步;开源能让模型更快到更多科学家手里。
+                    更关键的约束其实是<strong>数据</strong>——生物学不像语言模型有海量互联网数据,很多数据需要发明全新的科学方法(纽约的细胞工程、芝加哥的炎症检测设备)才能产生。
+                </li>
+                <li>
+                    <span class="tag">分层建模策略</span>
+                    从蛋白质 → 细胞 → 完整生物系统逐层往上搭,因为不理解蛋白质相互作用就没法理解细胞如何工作。他们刻意把 AI 团队和湿实验室合成一个团队,专门采集能打通各层级的连接性数据。
+                </li>
+                <li>
+                    <span class="tag">新模型 ESMFold</span>
+                    一个蛋白质生物学的 world model,基于语言模型在数十亿蛋白质序列上训练,涌现出对结构和功能的理解。已折叠并预测了 <strong>11 亿个蛋白质</strong>的结构,在结构预测、蛋白质-蛋白质 / 蛋白质-抗体相互作用上达到 SOTA。蛋白质设计能力是「涌现」出来的——可数字化筛选数十万条轨迹,再用一块 96 孔板验证,已找到达到治疗活性的 nanomolar binder。
+                </li>
+                <li>
+                    <span class="tag">愿景</span>
+                    Priscilla Chan 强调要「把个体当作个体来治疗」——理解某人的基因、风险、从基因变异到蛋白质到疾病的完整机制链,从而设计专属药物;并能在进入人体试验前就预测脱靶效应(如肾毒性)。她还提到用 Mechanistic Interpretability 打开模型黑箱,反过来提取出人类此前不知道的新生物学知识。
+                </li>
+            </ul>
+
+            <div class="links">
+                <a class="src" href="https://www.youtube.com/@NoPriorsPodcast" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">youtube.com/@NoPriorsPodcast</span></a>
+            </div>
+        </div>
+
+        <div class="empty-note">今天没有官方博客更新。</div>
+    </section>
+
+    <!-- === FOOTER === -->
+    <footer>
+        <p class="philosophy">“Follow builders with original opinions, not influencers who regurgitate.”</p>
+        <p class="attribution">
+            Generated through the Follow Builders skill<br>
+            <a href="https://github.com/zarazhangrui/follow-builders" target="_blank" rel="noopener">github.com/zarazhangrui/follow-builders</a>
+        </p>
+    </footer>
+
+</div>
+</body>
+</html>
