@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#faf8f3">
+<title>AI Builders Digest — 2026年6月27日</title>
+<meta name="description" content="追踪顶尖 AI builder 的每日文摘。今日主线:Bot 流量超人类、AI 监管囚徒困境、Codex 工业化。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500&family=Work+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --paper: #faf8f3;
+    --paper-deep: #f3efe6;
+    --ink: #1c1a17;
+    --ink-soft: #44403a;
+    --ink-muted: #837c72;
+    --ink-faint: #aaa498;
+    --accent: #c2410c;
+    --accent-soft: #e8643a;
+    --accent-wash: #fceee6;
+    --rule: #e3ddd0;
+    --rule-strong: #d4ccbb;
+    --link: #b23a0a;
+    --link-hover: #8c2d05;
+    --maxw: 760px;
+    --fs-body: 1.05rem;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+    background: var(--paper);
+    color: var(--ink-soft);
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 400;
+    font-size: var(--fs-body);
+    line-height: 1.72;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+}
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 12% 8%, rgba(194,65,12,0.04) 0%, transparent 42%),
+        radial-gradient(circle at 88% 92%, rgba(140,45,5,0.035) 0%, transparent 45%);
+}
+.shell { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; padding: 0 28px 100px; }
+header.hero { padding: 84px 0 44px; border-bottom: 3px double var(--rule-strong); }
+.hero .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.hero .kicker::before { content: ""; width: 30px; height: 2px; background: var(--accent); display: inline-block; }
+.hero h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(2.6rem, 9vw, 4.6rem);
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 28px;
+}
+.hero h1 .em { font-style: italic; color: var(--accent); font-weight: 500; }
+.hero .lede {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.1rem, 3.6vw, 1.3rem);
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 620px;
+}
+.hero .lede strong { color: var(--ink); font-weight: 600; }
+.hero .meta { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 9px; }
+.chip {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-muted);
+    background: var(--paper-deep);
+    border: 1px solid var(--rule);
+    border-radius: 100px;
+    padding: 6px 14px;
+    white-space: nowrap;
+}
+.chip .dot { color: var(--accent); }
+.section { padding-top: 64px; }
+.section-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 6px; }
+.section-head .num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem; font-weight: 500;
+    color: var(--accent); letter-spacing: 0.08em;
+}
+.section-head h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(1.9rem, 6vw, 2.5rem);
+    color: var(--ink);
+    letter-spacing: -0.01em;
+}
+.section-sub { color: var(--ink-muted); font-size: 0.92rem; margin-bottom: 12px; padding-bottom: 22px; border-bottom: 1px solid var(--rule); }
+
+/* Builder card */
+.builder { padding: 28px 0; border-bottom: 1px solid var(--rule); }
+.builder:last-child { border-bottom: none; }
+.builder-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 3px 12px; margin-bottom: 13px; }
+.builder-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 4.5vw, 1.6rem);
+    color: var(--ink);
+    line-height: 1.12;
+}
+.builder-role {
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-weight: 500;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.01em;
+}
+.builder-body { color: var(--ink-soft); margin-bottom: 16px; }
+.builder-body strong { color: var(--ink); font-weight: 600; }
+.builder-body em {
+    color: var(--accent);
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.04em;
+}
+
+.links { display: flex; flex-direction: column; gap: 8px; }
+a.src {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem; color: var(--link);
+    text-decoration: none; width: fit-content; max-width: 100%;
+    padding: 3px 0; transition: color 0.2s ease;
+}
+a.src .arrow { color: var(--accent); transition: transform 0.2s ease; flex-shrink: 0; font-weight: 500; }
+a.src .url-text { border-bottom: 1px solid var(--rule-strong); transition: border-color 0.2s ease; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+a.src:hover { color: var(--link-hover); }
+a.src:hover .arrow { transform: translateX(4px); }
+a.src:hover .url-text { border-bottom-color: var(--link-hover); }
+@media (hover: none) { a.src { padding: 7px 0; } }
+
+/* Podcast feature card */
+.podcast {
+    background: var(--paper-deep);
+    border: 1px solid var(--rule-strong);
+    border-radius: 14px;
+    padding: 38px 34px;
+    margin-top: 6px;
+}
+.podcast .pod-show {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 12px;
+}
+.podcast h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(1.5rem, 5vw, 1.9rem);
+    line-height: 1.16; margin-bottom: 8px;
+    color: var(--ink);
+}
+.podcast .guests {
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.0rem, 3.5vw, 1.15rem);
+    color: var(--accent);
+    margin-bottom: 22px;
+}
+.pod-points { list-style: none; display: flex; flex-direction: column; gap: 18px; margin: 22px 0; }
+.pod-points li { position: relative; padding-left: 24px; color: var(--ink-soft); }
+.pod-points li::before {
+    content: ""; position: absolute; left: 0; top: 11px;
+    width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+}
+.pod-points li strong { color: var(--ink); font-weight: 600; }
+.pod-points .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem; color: var(--accent);
+    letter-spacing: 0.04em; display: block;
+    margin-bottom: 4px; font-weight: 500;
+}
+
+/* Blog card */
+.blog-card {
+    background: var(--paper-deep);
+    border: 1px solid var(--rule-strong);
+    border-radius: 14px;
+    padding: 34px 34px;
+    margin-top: 6px;
+}
+.blog-card .blog-source {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 12px;
+}
+.blog-card h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(1.4rem, 4.5vw, 1.7rem);
+    line-height: 1.2; margin-bottom: 16px;
+    color: var(--ink);
+}
+
+/* Footer */
+footer { margin-top: 80px; padding-top: 34px; border-top: 3px double var(--rule-strong); text-align: center; }
+footer .philosophy {
+    font-family: 'Fraunces', serif;
+    font-style: italic; font-weight: 500;
+    font-size: clamp(1.2rem, 4.5vw, 1.5rem);
+    color: var(--ink); margin-bottom: 22px; line-height: 1.4;
+}
+footer .attribution {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem; color: var(--ink-faint);
+    letter-spacing: 0.02em; line-height: 1.8;
+}
+footer .attribution a { color: var(--link); text-decoration: none; border-bottom: 1px solid var(--rule-strong); }
+footer .attribution a:hover { color: var(--link-hover); }
+
+/* Animations */
+.reveal { opacity: 0; transform: translateY(18px); animation: rise 0.7s cubic-bezier(0.22,1,0.36,1) forwards; }
+@keyframes rise { to { opacity: 1; transform: translateY(0); } }
+.hero .kicker { animation-delay: 0.05s; }
+.hero h1     { animation-delay: 0.14s; }
+.hero .lede  { animation-delay: 0.28s; }
+.hero .meta  { animation-delay: 0.40s; }
+@media (prefers-reduced-motion: reduce) { .reveal { animation: none; opacity: 1; transform: none; } html { scroll-behavior: auto; } }
+
+@media (max-width: 600px) {
+    :root { --fs-body: 1.02rem; }
+    .shell { padding: 0 20px 72px; }
+    header.hero { padding: 56px 0 34px; }
+    .hero .meta { gap: 7px; }
+    .chip { font-size: 0.66rem; padding: 5px 11px; }
+    .section { padding-top: 52px; }
+    .podcast, .blog-card { padding: 28px 22px; border-radius: 12px; }
+    .builder { padding: 24px 0; }
+    a.src { font-size: 0.76rem; }
+}
+@media (max-width: 380px) { .shell { padding: 0 16px 64px; } }
+@supports (padding: max(0px)) {
+    .shell { padding-left: max(28px, env(safe-area-inset-left)); padding-right: max(28px, env(safe-area-inset-right)); }
+    @media (max-width: 600px) { .shell { padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); } }
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+    <header class="hero">
+        <div class="kicker reveal">AI BUILDERS DIGEST · 2026年6月27日</div>
+        <h1 class="reveal">Follow builders,<br>not <span class="em">influencers</span>.</h1>
+        <p class="lede reveal">
+            今天两条主线并行:<strong>Cloudflare CEO 宣布 bot 流量首次超越人类</strong>,标志互联网进入新纪元;
+            <strong>Box CEO 深度拆解 AI 监管困境</strong>。暗线是 OpenAI Codex 工业化加速、Vercel 的 AI 网关数据曝光,以及 Claude 正式登陆 Apple 全平台。
+        </p>
+        <div class="meta reveal">
+            <span class="chip"><span class="dot">●</span> 12 位 Builder</span>
+            <span class="chip"><span class="dot">●</span> 1 档播客</span>
+            <span class="chip"><span class="dot">●</span> 1 篇官方博客</span>
+            <span class="chip"><span class="dot">●</span> 来源已校验</span>
+        </div>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 1: X / TWITTER -->
+    <!-- ============================================================ -->
+    <section class="section">
+        <div class="section-head">
+            <span class="num">01</span>
+            <h2>X / Twitter</h2>
+        </div>
+        <p class="section-sub">顶尖 AI builder 的原创观点、产品发布与行业判断。</p>
+
+        <!-- Aaron Levie -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Aaron Levie</span>
+                <span class="builder-role">Box CEO</span>
+            </div>
+            <p class="builder-body">
+                两条长文深度分析美国 AI 监管。<strong>核心论点:</strong>当前的 AI 监管本质是「巨型囚徒困境」——如果美国严格管控前沿模型发布但中国不减速,反而会系统性助长对手的模型和生态,美国自己则陷入被动。他指出<strong>开放权重模型将是最大赢家</strong>,而美国的相对优势建立在「永远保持前沿」这个脆弱假设之上。
+                另一条认为<strong>事实上的 AI 监管已经落地</strong>——具有特定能力或算力规模的模型将来大概率需要政府审批才能发布。大胆预测:(1) 模型发布会从快速迭代转为大间隔阶跃;(2) 各国将加速主权 AI 战略;(3) 开放模型成为主权 AI 的底座。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/levie/status/2070370225271251161" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/levie/status/2070370225271251161</span></a>
+                <a class="src" href="https://x.com/levie/status/2070310706369712272" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/levie/status/2070310706369712272</span></a>
+            </div>
+        </article>
+
+        <!-- Thibault Sottiaux -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Thibault Sottiaux</span>
+                <span class="builder-role">OpenAI · Codex & ChatGPT</span>
+            </div>
+            <p class="builder-body">
+                发布了<strong>Codex 在 OpenAI 内部的使用数据</strong>:2月2日 Codex App 上线后,工程之外团队的采用曲线显著拉升。他称「Codex for everything at OpenAI」,并展示了一张冲击力极强的数据图表。这条推文获得 <strong>1407 赞、65 转发</strong>,反映出行业对 agentic 编码工具在生产环境中规模化落地的强烈关注。他还称赞了最新 Codex 更新「fantastic」。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/thsottiaux/status/2070205520552886305" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/thsottiaux/status/2070205520552886305</span></a>
+                <a class="src" href="https://x.com/thsottiaux/status/2070205719501254860" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/thsottiaux/status/2070205719501254860</span></a>
+            </div>
+        </article>
+
+        <!-- Guillermo Rauch -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Guillermo Rauch</span>
+                <span class="builder-role">Vercel CEO</span>
+            </div>
+            <p class="builder-body">
+                公布了一个关键数据:<strong>Grok Imagine Video 已占 Vercel AI Gateway 视频生成量的约 50%</strong>,成为开发者中使用最广泛的视频生成模型。他还展示了 Next.js 的「Ways to fix this」agentic 错误修复功能——每条错误提示附带「Copy prompt」按钮,可直接粘贴到 AI agent 中获取修复方案,称之为「agentic 艺术品」(542 赞)。
+                另一条博文探讨了一个产品设计问题:<em>如何将设计标准注入编码 agent</em>,确保 agent 生成的 UI 符合团队设计规范。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/rauchg/status/2070215849970119090" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/rauchg/status/2070215849970119090</span></a>
+                <a class="src" href="https://x.com/rauchg/status/2070243120546218000" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/rauchg/status/2070243120546218000</span></a>
+                <a class="src" href="https://x.com/rauchg/status/2070241572416078161" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/rauchg/status/2070241572416078161</span></a>
+            </div>
+        </article>
+
+        <!-- Aditya Agarwal -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Aditya Agarwal</span>
+                <span class="builder-role">South Park Commons GP · 前 Dropbox CTO</span>
+            </div>
+            <p class="builder-body">
+                一条尖锐的创业观察获得 <strong>568 赞</strong>:<em>「现在创办一家纯软件公司异常困难。客户不再想要软件,他们要的是结果。任何横向产品都处于倒计时中。每个客户都想深度定制。」</em>他认为仍有结构性机会,但创始人需要对未来 2-3 年的世界有非常异端的判断。这条推文拉响了传统 SaaS 模式的警钟——在 agent 时代,交付方式从软件变成了能力。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/adityaag/status/2070179913647485344" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/adityaag/status/2070179913647485344</span></a>
+            </div>
+        </article>
+
+        <!-- Dan Shipper -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Dan Shipper</span>
+                <span class="builder-role">Every CEO</span>
+            </div>
+            <p class="builder-body">
+                透露了一家由 <strong>a16z 支持的 stealth 健康科技公司</strong>:创始人背景极其硬核——前 One Medical、前 Bridgewater,正在纽约打造「AI-first 医疗 + 实体诊所」模式。正在招募高级工程师、能写代码的医生,以及一位 Codex-native 的 Chief of Staff。这个招聘帖本身就是一份行业信号:AI 医疗正在从纯软件走向线上线下闭环。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/danshipper/status/2070158469173256231" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/danshipper/status/2070158469173256231</span></a>
+            </div>
+        </article>
+
+        <!-- Peter Yang -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Peter Yang</span>
+                <span class="builder-role">AI 教程 / 访谈作者</span>
+            </div>
+            <p class="builder-body">
+                分享了一个<strong>实用 Codex 用例</strong>:用 Codex 的浏览器能力自动遍历 Google Flights 和各酒店官网、比价、整理行程文档——「我应该直接让它帮我把所有都订了」。另外他预测<strong>「身份验证 100% 会进入模型访问环节」</strong>,因为越来越多人用假身份注册 AI 产品,各家平台必然会添加 KYC 验证。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/petergyang/status/2070353698140958818" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/petergyang/status/2070353698140958818</span></a>
+                <a class="src" href="https://x.com/petergyang/status/2070352201944625405" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/petergyang/status/2070352201944625405</span></a>
+            </div>
+        </article>
+
+        <!-- Thariq -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Thariq</span>
+                <span class="builder-role">Anthropic · Claude Code</span>
+            </div>
+            <p class="builder-body">
+                宣布将和 Peter Yang 及 Cat Wu 在 AIE 大会上<strong>深度讲解 Claude Tag</strong>——Claude 的异步协作模式。他提了一句有趣的细节:宣传视频也是用 Claude 剪辑的。讲真,Anthropic 的产品从代码到宣发都已经全面 agent 化。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/trq212/status/2070238581147455842" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/trq212/status/2070238581147455842</span></a>
+            </div>
+        </article>
+
+        <!-- Garry Tan -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Garry Tan</span>
+                <span class="builder-role">Y Combinator CEO</span>
+            </div>
+            <p class="builder-body">
+                点名 <strong>Legora 是法律 AI 领域最具标杆意义的创业公司</strong>,值得关注。另一条转发的是「Jarvis-core」视频梗——AI agent 发布会视频的开场风格正在形成一种新的 meme 品类,获得 944 赞。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/garrytan/status/2070174023678648673" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/garrytan/status/2070174023678648673</span></a>
+            </div>
+        </article>
+
+        <!-- Zara Zhang -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Zara Zhang</span>
+                <span class="builder-role">Builder</span>
+            </div>
+            <p class="builder-body">
+                回应了一个常见的创业误解:<em>「有人认为建立个人影响力与做公司是对立的——实际上它们正在变成同一件事。讲故事(对用户、投资人、候选人)可能是创始人最重要的工作。建造成本越来越低,注意力越来越贵。」</em>简洁有力,每条线都打在痛点上。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/zarazhangrui/status/2070188279941738952" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/zarazhangrui/status/2070188279941738952</span></a>
+            </div>
+        </article>
+
+        <!-- Peter Steinberger -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Peter Steinberger</span>
+                <span class="builder-role">OpenClaw · OpenAI</span>
+            </div>
+            <p class="builder-body">
+                转发了一条对 AI agent 生态的共识性判断,只评论了一个词:<em>「truth」</em>——获得了 408 赞。当最了解 agent 基础设施的人只说「truth」时,原文值得点进去看看。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/steipete/status/2070355589994336345" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/steipete/status/2070355589994336345</span></a>
+            </div>
+        </article>
+
+        <!-- Amjad Masad -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Amjad Masad</span>
+                <span class="builder-role">Replit CEO</span>
+            </div>
+            <p class="builder-body">
+                预告 Replit 移动端<strong>即将迎来重大更新</strong>。虽然没有具体细节,但「major updates to mobile app」暗示 Replit 可能在移动端做更深度的 AI 编码体验。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/amasad/status/2070199548694437957" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/amasad/status/2070199548694437957</span></a>
+            </div>
+        </article>
+
+        <!-- Matt Turck -->
+        <article class="builder">
+            <div class="builder-head">
+                <span class="builder-name">Matt Turck</span>
+                <span class="builder-role">FirstMark 合伙人 · MAD Podcast 主持人</span>
+            </div>
+            <p class="builder-body">
+                本期多是他对世界杯的个人观察,但有一条与 AI 社区相关:他和 Cloudflare CEO Matthew Prince 的深度对话已在全平台上线——就是下面那期关于 bot 接管互联网的播客。
+            </p>
+            <div class="links">
+                <a class="src" href="https://x.com/mattturck/status/2070201854932250949" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">x.com/mattturck/status/2070201854932250949</span></a>
+            </div>
+        </article>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 2: OFFICIAL BLOGS -->
+    <!-- ============================================================ -->
+    <section class="section">
+        <div class="section-head">
+            <span class="num">02</span>
+            <h2>Official Blogs</h2>
+        </div>
+        <p class="section-sub">AI 公司官方发布。</p>
+
+        <div class="blog-card">
+            <div class="blog-source">Claude Blog</div>
+            <h3>在 Apple Foundation Models 框架中集成 Claude 构建智能应用</h3>
+            <p class="builder-body">
+                Anthropic 为 Apple 开发者发布了一个新的 Swift Package,通过 Apple 的 Foundation Models 框架调用 Claude。<strong>核心设计:</strong>本地模型处理快速任务(摘要、提取),需要多步推理或代码生成时自动切换至 Claude——开发者眼里只有一个统一的框架。框架通过 <code>@Generable</code> 注解返回类型化 Swift 值,开发者拿到的永远是干净的、类型安全的输入。支持 iOS 27、iPadOS 27、macOS 27、visionOS 27 和 watchOS 27。<br><br>
+                <strong>实际用例:</strong>日志应用可用本地模型生成每日提示词,再用 Claude 跨数月寻找关联主题;学习应用可本地解释概念,当学生追问深层关系时无缝切换到 Claude 给出完整答案。这是一次深思熟虑的「on-device + cloud」协作范式,即将 Claude 嵌入到了 Apple 的全平台能力图中。
+            </p>
+            <div class="links">
+                <a class="src" href="https://claude.com/blog/claude-for-foundation-models" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">claude.com/blog/claude-for-foundation-models</span></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECTION 3: PODCASTS -->
+    <!-- ============================================================ -->
+    <section class="section">
+        <div class="section-head">
+            <span class="num">03</span>
+            <h2>Podcasts</h2>
+        </div>
+        <p class="section-sub">本期精选一档深度对话。</p>
+
+        <div class="podcast">
+            <div class="pod-show">The MAD Podcast with Matt Turck</div>
+            <h3>Cloudflare CEO: Bot Takeover, Edge AI & The Hard Decision Every CEO Will Face</h3>
+            <div class="guests">嘉宾:Matthew Prince · Cloudflare 联合创始人 & CEO</div>
+
+            <p class="builder-body">
+                Matthew Prince 抛出了一个震撼数据,然后系统地拆解了它对互联网商业模式的冲击、对就业结构的重塑,以及 Cloudflare 自身的 AI 转型。
+            </p>
+
+            <ul class="pod-points">
+                <li>
+                    <span class="tag">Bot 流量超越人类</span>
+                    2026 年上半年,互联网 bot 流量<strong>首次超过人类流量</strong>。Prince 预测五年内互联网总流量可能增长一千倍。但他指出了一个根本性问题:<strong>bot 不点广告</strong>,而广告是互联网 28 年来的核心商业模式。他的判断——「<em>未来五年,互联网的商业模式将发生根本性变革。</em>」
+                </li>
+                <li>
+                    <span class="tag">AI 对就业的真实影响</span>
+                    Prince 明确反对「AI 取代所有工作」的论断。他的版本更具体:如果 AI 让开发者效率提升 10 倍,<strong>你会招更多开发者</strong>;如果让销售省去写方案的时间,<strong>你会招更多销售</strong>。真正的冲击在于「衡量类」职能部门——审计、合规、中层管理等。他举例:Cloudflare 有 105 个风险领域,过去每季度只能人工抽 6-10 个做深度审计,现在用 AI 可以全部覆盖。<em>「AI 比人类更适合做衡量类工作,部分原因在于它没有利益关联。」</em>
+                </li>
+                <li>
+                    <span class="tag">每家公司都会经历</span>
+                    他直言 Cloudflare 正在经历团队「right-sizing」,并预测<strong>接下来 6-12 个月,几乎每家公司都会走这一步</strong>——不是因为 AI 取代了人,而是因为组织从「人工流程 + 少量 AI」转向「AI 流程 + 少量人工」后,人员结构必须重新匹配业务流程。
+                </li>
+                <li>
+                    <span class="tag">Cloudflare 的 AI 转型</span>
+                    Prince 将 Cloudflare 定位为 AI 基础设施公司:Workers 作为边缘推理平台、AI Gateway 管控模型调用、Agent Security 保护 bot-to-bot 通信。如果说 2020 年代是「上云」,2030 年代就是「上 agent」——而 Cloudflare 想成为 agent 时代的 CDN。
+                </li>
+            </ul>
+
+            <div class="links">
+                <a class="src" href="https://www.youtube.com/watch?v=UN47z_opfmo" target="_blank" rel="noopener"><span class="arrow">→</span><span class="url-text">youtube.com/watch?v=UN47z_opfmo</span></a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p class="philosophy">"Follow builders with original opinions, not influencers who regurgitate."</p>
+        <p class="attribution">
+            Generated through the Follow Builders skill<br>
+            <a href="https://github.com/zarazhangrui/follow-builders" target="_blank" rel="noopener">github.com/zarazhangrui/follow-builders</a>
+        </p>
+    </footer>
+
+</div>
+</body>
+</html>
